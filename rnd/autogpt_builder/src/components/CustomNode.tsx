@@ -5,7 +5,6 @@ import './customnode.css';
 import ModalComponent from './ModalComponent';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
 
 type Schema = {
   type: string;
@@ -392,16 +391,8 @@ const CustomNode: FC<NodeProps<CustomNodeData>> = ({ data, id }) => {
     return Object.values(newErrors).every((error) => error === null);
   };
 
-  const handleSubmit = () => {
-    if (validateInputs()) {
-      console.log("Valid data:", data.hardcodedValues);
-    } else {
-      console.log("Invalid data:", errors);
-    }
-  };
-
   return (
-    <div className={`custom-node dark-theme ${data.status === 'RUNNING' ? 'running' : data.status === 'COMPLETED' ? 'completed' : ''}`}>
+    <div className={`custom-node dark-theme ${data.status === 'RUNNING' ? 'running' : data.status === 'COMPLETED' ? 'completed' : data.status === 'FAILED' ? 'failed' :''}`}>
       <div className="node-header">
         <div className="node-title">{data.blockType || data.title}</div>
         <Button onClick={toggleProperties} className="toggle-button">
@@ -445,12 +436,12 @@ const CustomNode: FC<NodeProps<CustomNodeData>> = ({ data, id }) => {
           </p>
         </div>
       )}
-      <Button onClick={handleSubmit}>Submit</Button>
       <ModalComponent
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleModalSave}
         value={modalValue}
+        key={activeKey}
       />
     </div>
   );
